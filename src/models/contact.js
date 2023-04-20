@@ -19,7 +19,7 @@ const contactSchema = new Schema(
       default: false,
     },
   },
-  { versionKey: false, timestamps: true }
+  { versionKey: false, timestamps: false }
 );
 
 const addContactSchema = Joi.object({
@@ -40,10 +40,6 @@ const addContactSchema = Joi.object({
       "string.pattern.base": `phone must be in the format (xxx) xxx-xxxx`,
       "string.empty": `phone cannot be an empty field`,
     }),
-  favorite: Joi.boolean().required().messages({
-    "any.required": `missing field favorite`,
-    "boolean.base": `favorite must be a boolean value`,
-  }),
 });
 
 const updateContactSchema = Joi.object({
