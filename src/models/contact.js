@@ -2,6 +2,8 @@ const { Schema, model } = require("mongoose");
 
 const Joi = require("joi");
 
+const { handleMongooseError } = require("../utils/handleMongooseError");
+
 const contactSchema = new Schema(
   {
     name: {
@@ -22,6 +24,8 @@ const contactSchema = new Schema(
   { versionKey: false, timestamps: false }
 );
 
+contactSchema.post("save", handleMongooseError);
+
 const addContactSchema = Joi.object({
   name: Joi.string().required().messages({
     "any.required": `missing required name field`,
@@ -40,6 +44,9 @@ const addContactSchema = Joi.object({
       "string.pattern.base": `phone must be in the format (xxx) xxx-xxxx`,
       "string.empty": `phone cannot be an empty field`,
     }),
+  favorite: Joi.boolean().messages({
+    "boolean.base": `favorite must be a boolean value`,
+  }),
 });
 
 const updateContactSchema = Joi.object({
@@ -56,9 +63,9 @@ const updateContactSchema = Joi.object({
       "string.pattern.base": `phone must be in the format (xxx) xxx-xxxx`,
       "string.empty": `phone cannot be an empty field`,
     }),
-    favorite: Joi.boolean().messages({
-      "boolean.base": `favorite must be a boolean value`,
-    }),
+  favorite: Joi.boolean().messages({
+    "boolean.base": `favorite must be a boolean value`,
+  }),
 });
 
 const updateStatusSchema = Joi.object({
