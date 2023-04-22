@@ -16,7 +16,6 @@ const {
   updateStatusSchema,
 } = require("../../models/contact");
 
-// AAAAAAAAAAAAAAAAAAAAA
 const { authenticate } = require("../../middlewares/authenticate");
 
 const router = express.Router();

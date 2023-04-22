@@ -26,10 +26,8 @@ const getContactById = async (req, res, next) => {
   res.status(200).json(result);
 };
 
-// AAAAAAAAAAAAAAAAAAAAA
 const addNewContact = async (req, res, next) => {
   const { _id: owner } = req.user;
-  // console.log(req.user);
   console.log({ _id: owner });
   const result = await Contact.create({ ...req.body, owner });
   res.status(201).json(result);
