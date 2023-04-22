@@ -16,18 +16,32 @@ const {
   updateStatusSchema,
 } = require("../../models/contact");
 
+// AAAAAAAAAAAAAAAAAAAAA
+const { authenticate } = require("../../middlewares/authenticate");
+
 const router = express.Router();
 
-router.get("/", controller.getAllContacts);
+router.get("/", authenticate, controller.getAllContacts);
 
-router.get("/:contactId", validateId, controller.getContactById);
+router.get("/:contactId", authenticate, validateId, controller.getContactById);
 
-router.post("/", validatePostBody(addContactSchema), controller.addNewContact);
+router.post(
+  "/",
+  authenticate,
+  validatePostBody(addContactSchema),
+  controller.addNewContact
+);
 
-router.delete("/:contactId", validateId, controller.deleteContactById);
+router.delete(
+  "/:contactId",
+  authenticate,
+  validateId,
+  controller.deleteContactById
+);
 
 router.put(
   "/:contactId",
+  authenticate,
   validateId,
   validatePutBody(updateContactSchema),
   controller.updateContactById
@@ -35,6 +49,7 @@ router.put(
 
 router.patch(
   "/:contactId/favorite",
+  authenticate,
   validateId,
   validatePatchBody(updateStatusSchema),
   controller.updateContactStatus
