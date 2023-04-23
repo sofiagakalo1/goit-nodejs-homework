@@ -5,7 +5,7 @@ const controllerWrapper = require("../utils/controllerWrapper");
 
 const { User } = require("../models/user");
 
-const { HttpError } = require("../helpers/HttpError");
+const HttpError = require("../helpers/HttpError");
 
 require("dotenv").config();
 const { SECRET_KEY } = process.env;
@@ -26,8 +26,10 @@ const register = async (req, res, next) => {
   }
 
   res.status(201).json({
-    email: result.email,
-    subscription: result.subscription,
+    user: {
+      email: result.email,
+      subscription: result.subscription,
+    },
   });
 };
 
