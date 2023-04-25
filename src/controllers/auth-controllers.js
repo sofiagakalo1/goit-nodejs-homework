@@ -1,5 +1,6 @@
 const bcrypetjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const gravatar = require("gravatar");
 
 const controllerWrapper = require("../utils/controllerWrapper");
 
@@ -18,8 +19,13 @@ const register = async (req, res, next) => {
   }
 
   const hashedPassword = await bcrypetjs.hash(password, 10);
+  const avatarURL = gravatar.url(email);
 
-  const result = await User.create({ ...req.body, password: hashedPassword });
+  const result = await User.create({
+    ...req.body,
+    password: hashedPassword,
+    avatarURL,
+  });
 
   if (!result) {
     next(HttpError(400, "Помилка від Joi або іншої бібліотеки валідації"));
