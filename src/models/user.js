@@ -3,8 +3,6 @@ const Joi = require("joi");
 
 const { handleMongooseError } = require("../utils/handleMongooseError");
 
-// const emailRegExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-
 const userSchema = new Schema(
   {
     name: {
@@ -13,7 +11,6 @@ const userSchema = new Schema(
     },
     email: {
       type: String,
-      // match: emailRegExp,
       required: [true, "Email is required"],
       unique: true,
     },
@@ -34,6 +31,14 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+      required: [true, "Verify token is required"],
+    },
   },
   { versionKey: false, timestamps: false }
 );
@@ -51,10 +56,18 @@ const loginSchema = Joi.object({
   password: Joi.string().min(6).required(),
 });
 
+const emailSchema = Joi.object({
+  email: Joi.string().required().messages({
+    "any.required": `missing required email field`,
+    "string.empty": `email cannot be an empty field`,
+  }),
+});
+
 const User = model("user", userSchema);
 
 module.exports = {
   User,
   registerSchema,
   loginSchema,
+  emailSchema,
 };

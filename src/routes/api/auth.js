@@ -2,9 +2,9 @@ const express = require("express");
 
 const router = express.Router();
 
-const { validatePostBody } = require("../../utils/validateBody");
+const { validatePostBody, validatePostEmail } = require("../../utils/validateBody");
 
-const { registerSchema, loginSchema } = require("../../models/user");
+const { registerSchema, loginSchema, emailSchema } = require("../../models/user");
 
 const controller = require("../../controllers/auth-controllers");
 
@@ -21,5 +21,7 @@ router.patch(
   upload.single("avatar"),
   controller.updateAvatar
 );
+router.get("/verify/:verificationToken", controller.verify);
+router.post("/verify", validatePostEmail(emailSchema), controller.resendVerifyEmail);
 
 module.exports = router;
